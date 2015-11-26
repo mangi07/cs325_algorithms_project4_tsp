@@ -13,7 +13,7 @@
 *   For example:                                                             *
 *     2 50 23                                                                *
 *   is city #2 with coordinates (50, 23) in the 2-d plane.                   *
-/*****************************************************************************/
+******************************************************************************/
 
 
 
@@ -25,7 +25,7 @@
 #include <cstdlib>
 #include <vector>
 
-
+using namespace std;
 
 /*****************************************************************************
 * The purpose of this class is to create a matrix representing distances     *
@@ -67,7 +67,7 @@ class Cities
             int x;
             int y;
         };
-        vector<coords> citiesData;
+        std::vector<coords> citiesData;
         
         // To fill matrix based on city data
         void initMatrix(std::string inputFile);
@@ -75,7 +75,7 @@ class Cities
                                             //   and returns their Euclidean distance
         
         
-}
+};
 
 
 

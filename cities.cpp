@@ -13,13 +13,14 @@
 *   For example:                                                             *
 *     2 50 23                                                                *
 *   is city #2 with coordinates (50, 23) in the 2-d plane.                   *
-/*****************************************************************************/
+******************************************************************************/
 
 
 
-#ifndef CITIES_H
-#define CITIES_H
+//#ifndef CITIES_H
+//#define CITIES_H
 
+#include "cities.h"
 
 #include <iostream>
 #include <cstdlib>
@@ -29,6 +30,7 @@
 #include <sstream>
 #include <fstream>
 
+using namespace std;
 
 
 /*****************************************************************************
@@ -51,12 +53,12 @@
 // Initialize the object with input file.
 //   This will create a matrix representing
 //   distances between each pair of input cities.
-Cities::Cities(std::string inputFile)
+Cities::Cities(string inputFile)
 {
     initMatrix(inputFile);
 }
         
-Cities()
+Cities::Cities()
 {
     // Intentionally left blank.
 }
@@ -80,20 +82,31 @@ void Cities::set()
 
             
             
-// To load city coordinates from input file
+// To load city coordinates from input file into struct citiesData
 // Uses fstream
-void Cities::parseInputFile(std::string inputFile)
+// Loads data into struct cityData
+void Cities::parseInputFile(string inputFile)
 {
 
     ifstream input;
+    string line;
     input.open(inputFile);
+    int c, x, y;        // city c with coordinates (x, y)
+    coords city_coords;
+    
     if (input.is_open())
     {
         while ( getline (input, line) )
         {
             stringstream(line) >> c >> x >> y;
             // test
-            std::cout << c << " " << x << " " << y << " " << std::endl;
+            //cout << c << " " << x << " " << y << " " << endl;
+            city_coords.x = x;
+            city_coords.y = y;
+            if ( c == citiesData.size() )
+            {
+                citiesData.push_back(city_coords);
+            }
             
         }
     }
@@ -102,19 +115,50 @@ void Cities::parseInputFile(std::string inputFile)
     
 }
 
-vector<coords> Cities::citiesData;
 
 // To fill matrix based on city data
 void Cities::initMatrix(std::string inputFile)
 {
+    
     Cities::parseInputFile(inputFile);
+    
+    int num_cities = citiesData.size();
+    // initialize the matrix
+    vector<vector<int>> matrix(
+        num_cities,
+        vector<int>(num_cities, -1)
+    );
+    
+
+    
+    int distance = NULL;
+    coords c1, c2;           // coordinates of a city
+    for (int i = 0; i < num_cities; i++)
+    {
+        for (int j = i; j < num_cities; j++)
+        {
+            c1 = citiesData[j];
+            c2 = citiesData[j];
+            if (i == j)
+                distance = 0;
+            else
+                distance = Cities::calcDist(c1, c2);
+            
+            matrix[i][j] = distance;
+            // fill in the symmetry (column i is the transpose of row i)
+            matrix[j][i] = distance;
+            
+        }
+        
+    }
+    
 }
 
 // receives coordinates for a pair of cities
 //   and returns their Euclidean distance
 int Cities::calcDist(coords c1, coords c2)
 {
-    return 0;
+    return 5;
 }
 
 
@@ -122,4 +166,4 @@ int Cities::calcDist(coords c1, coords c2)
 
 
 
-#endif // CITIES_H
+//#endif // CITIES_H

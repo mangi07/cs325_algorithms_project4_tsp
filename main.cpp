@@ -2,18 +2,22 @@
 
 #include "cities.h"
 #include <iostream>
-#incude <string>
+#include <string>
+
+using namespace std;
 
 int main (int argc, char* argv[])
 {
 
-    std::string fileName;
+    string fileName;
     
-    std::cout << "Enter name of file: ";
-    std::cin << fileName;
+    cout << "Enter name of file: ";
+    cin >> fileName;
+    cout << endl;
     
     Cities cities(fileName);
     
     return 0;
 
 }
+
