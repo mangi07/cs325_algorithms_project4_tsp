@@ -37,7 +37,7 @@ using namespace std;
 *   (c1 to c2) = 3                                                           *
 *   (c2 to c3) = 6                                                           *
 *   (c3 to c1) = 6                                                           *
-* and these distances are stored in the adjacency matrix as follows:         *
+* and these distances are stored in the matrix as follows:         *
 *   <array[index][index] distance> for each "cell" entry                     *
 *   | [0][0] 0 | [0][1] 3 | [0][2] 6 |                                       *
 *   | [1][0] 3 | [1][1] 0 | [1][2] 6 |                                       *

@@ -16,15 +16,13 @@
 ******************************************************************************/
 
 
-
-//#ifndef CITIES_H
-//#define CITIES_H
-
 #include "cities.h"
 
 #include <iostream>
 #include <cstdlib>
 #include <vector>
+
+#include <math.h>
 
 #include <string>
 #include <sstream>
@@ -64,10 +62,6 @@ Cities::Cities()
 }
 
 
-
-
-
-
 // return the matrix
 vector<vector <int> > Cities::get()
 {
@@ -75,6 +69,7 @@ vector<vector <int> > Cities::get()
     vector<vector <int> > v;
     return v;
 }
+
 
 // load new set of cities into the matrix
 void Cities::set()
@@ -137,7 +132,7 @@ void Cities::initMatrix(std::string inputFile)
     {
         for (int j = i; j < num_cities; j++)
         {
-            c1 = citiesData[j];
+            c1 = citiesData[i];
             c2 = citiesData[j];
             if (i == j)
                 distance = 0;
@@ -158,12 +153,18 @@ void Cities::initMatrix(std::string inputFile)
 //   and returns their Euclidean distance
 int Cities::calcDist(coords c1, coords c2)
 {
-    return 5;
+    
+    // Calculate Euclidean distance
+    int distance = -1;
+    double x_sqr = pow((c1.x - c2.x), 2);
+    double y_sqr = pow((c1.y - c2.y), 2);
+    distance = (int) (sqrt(x_sqr + y_sqr) + 0.5);
+    
+    return distance;
+    
 }
 
 
 
 
 
-
-//#endif // CITIES_H
