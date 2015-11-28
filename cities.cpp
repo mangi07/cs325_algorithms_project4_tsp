@@ -64,18 +64,24 @@ Cities::Cities()
 
 
 // return the distance between c1 and c2
+// If either of the passed in city numbers is too large,
+//   this funciton returns -1
 int Cities::getDistance(int c1, int c2)
 {
-    // stub
-    int distance;
-    return distance;
+    if (c1 >= matrix.size() || c2 >= matrix.size())
+        return -1;
+        
+    return matrix[c1][c2];
+    
 }
 
 
 // load new set of cities into the matrix
 // must be a text file as specified on lines 11-15
-void Cities::loadNewGroup()
-{}
+void Cities::loadNewGroup(string newFile)
+{
+    initMatrix(newFile);
+}
 
             
             
@@ -90,6 +96,8 @@ void Cities::parseInputFile(string inputFile)
     input.open(inputFile);
     int c, x, y;        // city c with coordinates (x, y)
     coords city_coords;
+    
+    citiesData.clear(); // necessary when reinitializing matrix
     
     if (input.is_open())
     {
@@ -114,7 +122,7 @@ void Cities::parseInputFile(string inputFile)
 
 
 // To fill matrix based on city data
-void Cities::initMatrix(std::string inputFile)
+void Cities::initMatrix(string inputFile)
 {
     
     Cities::parseInputFile(inputFile);
@@ -148,7 +156,7 @@ void Cities::initMatrix(std::string inputFile)
         
     }
     
-    matrix = &M;
+    matrix = M;
     
 }
 
@@ -158,7 +166,6 @@ int Cities::calcDist(coords c1, coords c2)
 {
     
     // Calculate Euclidean distance
-    //int distance = -1;
     double x_sqr = pow((c1.x - c2.x), 2);
     double y_sqr = pow((c1.y - c2.y), 2);
     int distance = (int) (sqrt(x_sqr + y_sqr) + 0.5);
