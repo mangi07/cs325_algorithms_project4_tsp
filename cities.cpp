@@ -48,6 +48,7 @@ using namespace std;
 *   | [2][0] 6 | [2][1] 6 | [2][2] 0 |                                       *
 ******************************************************************************/
 
+
 // Initialize the object with input file.
 //   This will create a matrix representing
 //   distances between each pair of input cities.
@@ -62,17 +63,18 @@ Cities::Cities()
 }
 
 
-// return the matrix
-vector<vector <int> > Cities::get()
+// return the distance between c1 and c2
+int Cities::getDistance(int c1, int c2)
 {
     // stub
-    vector<vector <int> > v;
-    return v;
+    int distance;
+    return distance;
 }
 
 
 // load new set of cities into the matrix
-void Cities::set()
+// must be a text file as specified on lines 11-15
+void Cities::loadNewGroup()
 {}
 
             
@@ -119,11 +121,10 @@ void Cities::initMatrix(std::string inputFile)
     
     int num_cities = citiesData.size();
     // initialize the matrix
-    vector<vector<int>> matrix(
+    vector<vector<int>> M(
         num_cities,
         vector<int>(num_cities, -1)
     );
-    
 
     
     int distance = NULL;
@@ -139,13 +140,15 @@ void Cities::initMatrix(std::string inputFile)
             else
                 distance = Cities::calcDist(c1, c2);
             
-            matrix[i][j] = distance;
+            M[i][j] = distance;
             // fill in the symmetry (column i is the transpose of row i)
-            matrix[j][i] = distance;
+            M[j][i] = distance;
             
         }
         
     }
+    
+    matrix = &M;
     
 }
 
@@ -155,10 +158,10 @@ int Cities::calcDist(coords c1, coords c2)
 {
     
     // Calculate Euclidean distance
-    int distance = -1;
+    //int distance = -1;
     double x_sqr = pow((c1.x - c2.x), 2);
     double y_sqr = pow((c1.y - c2.y), 2);
-    distance = (int) (sqrt(x_sqr + y_sqr) + 0.5);
+    int distance = (int) (sqrt(x_sqr + y_sqr) + 0.5);
     
     return distance;
     

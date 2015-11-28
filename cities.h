@@ -54,8 +54,8 @@ class Cities
         Cities(std::string inputFile);
         Cities();
         
-        vector<vector <int> > get();        // return the matrix
-        void set();                         // load new set of cities into the matrix
+        int getDistance(int c1, int c2);    // return the distance between c1 and c2
+        void loadNewGroup();            // load new set of cities into the matrix
         
         
     private:            
@@ -68,6 +68,8 @@ class Cities
             int y;
         };
         std::vector<coords> citiesData;
+        
+        vector<vector<int>> * matrix;
         
         // To fill matrix based on city data
         void initMatrix(std::string inputFile);
