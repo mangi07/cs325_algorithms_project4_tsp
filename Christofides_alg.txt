@@ -1,0 +1,294 @@
+
+NOTE: Also reference
+https://github.com/beckysag/traveling-salesman
+
+
+
+
+
+Prim's Minimum Spanning Tree Algorithm:
+
+
+Modified from CLRS, pp. 634
+
+V: set of cities
+u or v: a city in set V
+r: root city in set V
+Q: min-priority queue
+
+COMPARE_KEY(u, v)
+    if u.key <= v.key
+        return TRUE
+    return FALSE
+    
+
+MST_PRIM(V, r)
+    for each city u in V    // O(V)
+        u.key = inf
+        u.prev = NIL
+    r.key = 0
+    L = V                   // Q implemented as c++ list
+    L.sort(COMPARE_KEY)
+    while L != empty        // O(V)
+        u = L.pop()         // O(1) with list pop()
+                            //   On first iteration
+        for each v in L     // valid since this is a fully-connected graph
+                            //   (|L| = number of edges crossing the cut between V - L visited and L unvisited)
+                            // sum(of i=1 to |V|)i = O(V^2) iterations of this for
+            if v != u and v in L and distance(u, v) < v.key
+                C.addEdge(u, v) // needed for future tree traversal
+                                // this adds an undirected edge
+                v.key = distance(u, v)
+        L.sort(COMPARE_KEY)     // O(V lg V) sort, compare keys of structs: city1.key to city2.key
+                            //   needed because of modifying vertex keys
+
+                
+
+Time complexity:
+    MST_PRIM O(E lg V) on CLRS, p. 636, 
+    
+    but we need a careful analysis because I've slightly modified the algorithm from CLRS:
+    O(V):                   first for loop +
+    O(V):                   initialize list L to contain elements of set V
+    O(V lg V):              sort L
+    O(V):                   while evaluates condition Q = V times +
+    O(V):                   pop() performed L = V times in while loop, where each pop() is O(1) +
+    O(V(V-1)/2) = O(V^2):   number of iterations of second for loop is the sum of arithmetic series + 
+    O(V lg V * V):          sort the remaining list after each u is popped in the while loop
+    
+    
+    Adding time complexities: O(V + V + V lg V + V + V + V^2 + V lg V * V) = O(V^2 lg V)
+    Thus, the modified MST_PRIM runs in O(V^2 lg V) time.
+    
+*******************************************************************************
+
+Christofides heuristic: JE 31.7 pp. 7-8
+
+Given the MST found above, we then compute a minimum-cost perfect matching of all the
+odd-degree vertices.  First, we find all the vertices of odd degree from the set of cities C.
+Let's call this set of odd-degree vertices O.  Set O can be found in linear time by
+iterating through each vertex v (city) in citiesData to find v.size(): For each v in citiesData,
+if v is odd, then add v to set O.
+
+"In the next stage of the algorithm, we compute 
+a minimum-cost perfect matching M of these odd-degree vertices. A prefect matching is 
+a collection of edges, where each edge has both endpoints in O and each vertex in O 
+is adjacent to exactly one edge; we want the perfect matching of minimum total length."
+(JE 31.7, p. 8)  We can use a greedy algorithm to approximate this as follows:
+
+MATCH(C, O)     // C holds the edge list and distances between cities
+                // O is implemented in c++ using the list container
+
+while O != empty
+    u = O.pop()
+    // check each v in O for the shortest distance(u, v)
+    min = -1     // functionally equivalent to infinity in this context
+    nearest      // identifying the nearest known vertex to u
+    for each v in O
+        if distance(u, v) < min
+            min = distance(u, v)
+            nearest = v
+    C.addEdge(u, v)     // create new undirected edge (u, v)
+
+
+Time Complexity: In the worst case all edges are of odd degree, and so while loop will
+iterate O(V) times, and each time, the number of for loop iterations decreases by one,
+giving us an arithmetic summation of the for loop that is O(V^2) time.  Since V^2 is
+the dominating term, the time complexity of MATCH is O(V^2).
+*******************************************************************************
+
+C: Euler graph of cities (vertices)
+r: root, starting city
+H: vector representing Hamiltonian path
+d: distance of this path
+
+// This procedure modifies H and d passed in
+GRAPH_TRAVERSAL(C, r, H, d)
+    H = empty set
+    stack S = empty set;
+    
+    // mark each vertex unvisited
+    for each v in C
+        v.visited = FALSE
+    
+    // first vertex visited is special, with no edges to remove
+    for each v in r.adj
+        S.push(v)   // push v onto stack
+    prev = r            // r becomes the most recently visited vertex
+    r.visited = TRUE
+    H.push_back(r)
+    
+    // each subsequent vertex visitation requires an edge removal
+    while S != empty
+        u = S.pop()         // pop stack
+        C.removeEdge(u, prev)
+        
+        if (u.visited == FALSE)
+            u.visited = TRUE    // mark u as visited
+            H.push_back(u)      // record the order of visitation
+        
+            for each v in u.adj
+                S.push(v)   // push v onto stack
+        
+        prev = u    // needed for next iteration
+    
+    // add r to complete the Hamiltonian cycle
+    H.push_back(r)
+    
+    // compute the distance of the Hamiltonian cycle
+    i  = 0
+    c1 = H[0]
+    c2 = H[1]
+    d  = 0      // cumulative distance
+    for (i to H.length-2)
+        d = d + distance(c1, c2)
+        c1 = c2
+        c2 = H[i+2]
+
+        
+        
+Time Complexity:
+    Let the number of cities = |V|, where each city is a vertex.
+    
+    O(V): mark each vertex visited.
+    
+    O(V): Every time a vertex is marked visited, its edges are pushed onto the stack.
+    Each vertex is marked exactly once.
+    There is one more edge than the number of vertices in the graph.
+    Therefore, there are O(2(V+1))=O(V) pushes onto the stack.
+    
+    O(V): Compute the distance of the Hamiltonian cycle.
+    
+    Everything else takes constant time.
+    Therefore, the time complexity of GRAPH_TRAVERSAL is O(V).
+
+*******************************************************************************
+!!!NOT USED (BUT AVAILABLE IF ABOVE TREE_TRAVERSAL IS WORSE
+
+
+Modified from week 10 *.ppt in Data Structures class CS261 fall 2012 at OSU
+
+H: list of vertices in order that they were visited,
+implemented in c++ as a vector
+
+PREORDER_TREE_TRAVERSAL(C, r, H)
+    H = empty set
+    stack S = empty set;
+    S.push(r)               // push r onto stack
+    while S != empty
+        u = S.pop()         // pop stack
+        u.visited = TRUE    // mark u as visited
+        H.push_back(u)      // record the order of visitation
+        for each v in u.adj
+            if v.visited == FALSE
+                S.push(v)   // push v onto stack
+    return H
+    
+
+Time Complexity: 
+*******************************************************************************
+
+
+TODO:
+
+After modifying class City according to what is below,
+test City with new modifications,
+play with c++ list, implementing compare function,
+include Cities in MST_PRIM, 
+and then implement MST_PRIM (with c++ list container).
+
+
+
+Add to struct city:
+    vector adj (list of undirected edges city->given adj vertex) 
+    
+consider struct initialization:
+    struct example{member1; member2;};
+    struct name = {member1_value, member2_value};
+
+
+public C.nearestNeighbor(city c) nearest neighbor to city c     // used in MST alg
+public C.getPrev(city c)    // may not be necessary
+public C.getAdj(city c)     // returns c.adj list as a vector
+public C.addEdge(city u index, city v index) // given city u, create undirected directed edge (u, v)
+public C.removeEdge(u, v)   // remove undirected edge
+public C.markVisited(index of city c)
+public C.markUnvisited(index of city c)
+
+private C.unvisited set of unvisited vertices
+
+
+
+
+
+*****************
+
+
+
+!!!OR BETTER YET, USE deque because we need to iterate over the elements without popping them...
+as an alternative to priority queue.
+
+****
+****
+!!!!!OR EVEN BETTER YET, USE list because you can traverse and sort
+http://www.cplusplus.com/reference/list/list/sort/
+list sort O(N lg N)
+****
+****
+
+implementation of priority queue:
+
+Use std::greater as the comparison function:
+
+std::priority_queue<int, std::vector<int>, std::greater<int> > my_min_heap;
+
+from http://stackoverflow.com/questions/2439283/how-can-i-create-min-stl-priority-queue
+
+*******************************************
+
+Adapt the following example to queue object by writing an operator overloader in the Class,
+http://stackoverflow.com/questions/2439283/how-can-i-create-min-stl-priority-queue:
+
+
+
+
+#include <functional>
+#include <queue>
+#include <vector>
+#include <iostream>
+ 
+template<typename T> void print_queue(T& q) {
+    while(!q.empty()) {
+        std::cout << q.top() << " ";
+        q.pop();
+    }
+    std::cout << '\n';
+}
+ 
+int main() {
+    std::priority_queue<int> q;
+ 
+    for(int n : {1,8,5,6,3,4,0,9,7,2})
+        q.push(n);
+ 
+    print_queue(q);
+ 
+    std::priority_queue<int, std::vector<int>, std::greater<int> > q2;
+ 
+    for(int n : {1,8,5,6,3,4,0,9,7,2})
+        q2.push(n);
+ 
+    print_queue(q2);
+ 
+    // Using lambda to compare elements.
+    auto cmp = [](int left, int right) { return (left ^ 1) < (right ^ 1);};
+    std::priority_queue<int, std::vector<int>, decltype(cmp)> q3(cmp);
+ 
+    for(int n : {1,8,5,6,3,4,0,9,7,2})
+        q3.push(n);
+ 
+    print_queue(q3);
+ 
+}
+
+******************************************************

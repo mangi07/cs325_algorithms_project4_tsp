@@ -60,24 +60,32 @@ class Cities
         int getDistance(int c1, int c2);    
         // load new set of cities into the matrix
         void loadNewGroup(string inputFile);
-        
+        // get number label of nearest neighbor to u
+        //  (all cities are numbered and referenced by that number)
+        int nearestNeighbor(int u);
+        // returns the number of cities represented by the Cities object
+        int getSize();
         
     private:            
                     
         // To load city coordinates from input file
         void parseInputFile(std::string inputFile);
-        struct coords
+        struct city
         {
+            city(): visited(false){}
+            
+            vector<int> edges;  // list of city numbers incident on city
             int x;
             int y;
+            bool visited;
         };
-        std::vector<coords> citiesData;
+        std::vector<city> citiesData;
         
         vector<vector<int>> matrix;
         
         // To fill matrix based on city data
         void initMatrix(std::string inputFile);
-        int calcDist(coords c1, coords c2); // receives coordinates for a pair of cities
+        int calcDist(city c1, city c2); // receives coordinates for a pair of cities
                                             //   and returns their Euclidean distance
         
         

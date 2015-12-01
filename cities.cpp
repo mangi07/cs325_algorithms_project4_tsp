@@ -63,6 +63,17 @@ Cities::Cities()
 }
 
 
+
+
+
+
+
+/*********************************************************************
+PUBLIC MEMBERS
+*********************************************************************/
+
+
+
 // return the distance between c1 and c2
 // If either of the passed in city numbers is too large,
 //   this funciton returns -1
@@ -83,6 +94,44 @@ void Cities::loadNewGroup(string newFile)
     initMatrix(newFile);
 }
 
+// get number label of nearest neighbor to u
+//   (all cities are numbered and referenced by that number)
+//   If u has been marked visited, this function will return -1
+int Cities::nearestNeighbor(int u)
+{
+    if (u >= matrix.size() || citiesData[u].visited == true)
+        return -1;
+    
+    int distance = -1;
+    int v = -1;
+    for (int i = 0; i < matrix[u].size(); i++){
+        if (matrix[u][i] < distance || distance == -1)
+        {
+            if (u != i)
+            {
+                v = i;
+                distance = matrix[u][i];
+            }
+        }
+        
+    }
+    
+    return v;
+}
+
+int Cities::getSize()
+{
+    return Cities::matrix.size();
+}
+
+
+
+
+
+
+/*********************************************************************
+PRIVATE MEMBERS
+*********************************************************************/
             
             
 // To load city coordinates from input file into struct citiesData
@@ -95,7 +144,7 @@ void Cities::parseInputFile(string inputFile)
     string line;
     input.open(inputFile);
     int c, x, y;        // city c with coordinates (x, y)
-    coords city_coords;
+    city city_coords;
     
     citiesData.clear(); // necessary when reinitializing matrix
     
@@ -136,7 +185,7 @@ void Cities::initMatrix(string inputFile)
 
     
     int distance = NULL;
-    coords c1, c2;           // coordinates of a city
+    city c1, c2;           // coordinates of a city
     for (int i = 0; i < num_cities; i++)
     {
         for (int j = i; j < num_cities; j++)
@@ -162,7 +211,12 @@ void Cities::initMatrix(string inputFile)
 
 // receives coordinates for a pair of cities
 //   and returns their Euclidean distance
-int Cities::calcDist(coords c1, coords c2)
+//
+//   This function should only be called when
+//   instantiating a new Cities instance
+//   or where loading a new set of cities into
+//   an existing Cities instance.
+int Cities::calcDist(city c1, city c2)
 {
     
     // Calculate Euclidean distance
