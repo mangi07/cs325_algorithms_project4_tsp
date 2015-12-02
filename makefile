@@ -1,11 +1,13 @@
 
+CXX = g++
+CXXFLAGS = -std=c++0x -g
+#OBJS = 
+HEADERS = MST_PRIM.h MATCH.h cities.h
+
+default:  main.cpp cities.o ${HEADERS}
+	${CXX} ${CXXFLAGS} main.cpp cities.o ${HEADERS} -o tsp
 
 
-default: main.cpp cities.h cities.cpp
-	g++ -std=c++0x main.cpp cities.cpp -o tsp
 	
-debug: main.cpp cities.h cities.cpp
-	g++ -std=c++0x -g main.cpp cities.cpp -o tsp
-	
-MST_PRIM: MST_PRIM.h cities.h cities.cpp main.cpp
-	g++ -std=c++0x -g MST_PRIM.h cities.h cities.cpp main.cpp -o MST
+cities.o: cities.cpp cities.h
+	g++ -std=c++0x -g cities.cpp cities.h -c

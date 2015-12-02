@@ -79,19 +79,31 @@ a collection of edges, where each edge has both endpoints in O and each vertex i
 is adjacent to exactly one edge; we want the perfect matching of minimum total length."
 (JE 31.7, p. 8)  We can use a greedy algorithm to approximate this as follows:
 
-MATCH(C, O)     // C holds the edge list and distances between cities
-                // O is implemented in c++ using the list container
+MATCH(C)        // C holds the edge list and distances between cities
 
+O = empty set   // O is implemented in c++ using the list container
+                //   O will hold the set of all vertices in C of odd degree
+
+for each vertex c in C
+    if ( c.adj.size() % 2 != 0 )    // modulus when dividing edge list size by 2
+                                    //   compared to 0
+                                    //   tells us whether c is of odd degree
+        O.push_back(c)              // add the city number              
+                
 while O != empty
-    u = O.pop()
+    u = O.pop()             // gives us the city number
+    
     // check each v in O for the shortest distance(u, v)
-    min = -1     // functionally equivalent to infinity in this context
-    nearest      // identifying the nearest known vertex to u
+    min = -1                // functionally equivalent to infinity in this context
+    nearest                 // identifying the nearest known vertex to u
+    
     for each v in O
-        if distance(u, v) < min
+        if distance(u, v) < min || min == -1
             min = distance(u, v)
             nearest = v
+    
     C.addEdge(u, v)     // create new undirected edge (u, v)
+    O.remove(v)
 
 
 Time Complexity: In the worst case all edges are of odd degree, and so while loop will
@@ -197,18 +209,6 @@ Time Complexity:
 
 TODO:
 
-play with c++ list, implementing compare function,
-include Cities in MST_PRIM, 
-and then implement MST_PRIM (with c++ list container).
-
-
-
-Add to struct city:
-    vector adj (list of undirected edges city->given adj vertex) 
-    
-consider struct initialization:
-    struct example{member1; member2;};
-    struct name = {member1_value, member2_value};
 
 
 public C.nearestNeighbor(city c) nearest neighbor to city c     // used in MST alg

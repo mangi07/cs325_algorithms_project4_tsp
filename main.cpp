@@ -2,6 +2,7 @@
 
 #include "cities.h"
 #include "MST_PRIM.h"
+#include "MATCH.h"
 #include <iostream>
 #include <string>
 
@@ -95,7 +96,27 @@ int main (int argc, char* argv[])
 */
     
     
+//TEST CASE MATCH (uses MST_PRIM)
+    Cities C(fileName);
+    MST_PRIM(C);
+    MATCH(C);
     
+    vector<vector<int>> adj;
+    for (int i = 0; i < C.getSize(); i++)
+    {
+        adj.push_back(C.getAdj(i));
+    }
+    for (int j = 0; j < C.getSize(); j++)
+    {
+        cout << j << ".adj: ";
+        for (int k = 0; k < adj[j].size(); k++)
+            cout << adj[j][k] << " ";
+        cout << endl;
+    }
+    
+
+
+//END TEST CASE MATCH
     
     return 0;
 
