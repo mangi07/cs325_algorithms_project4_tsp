@@ -187,7 +187,7 @@ void Cities::removeEdge(int u, int v)
     }
     else
     {
-        cout << "Error in Cities::addEdge: invalid input" << endl;
+        cout << "Error in Cities::removeEdge: invalid input" << endl;
     }  
 }
 

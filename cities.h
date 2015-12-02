@@ -58,16 +58,17 @@ class Cities
         // If either of the passed in city numbers is too large,
         //   this funciton returns -1
         int getDistance(int c1, int c2);    
+        
         // load new set of cities into the matrix
         void loadNewGroup(string inputFile);
+        
         // get number label of nearest neighbor to u
         //  (all cities are numbered and referenced by that number)
         int nearestNeighbor(int u);
+        
         // returns the number of cities represented by the Cities object
         int getSize();
 
-        
-// EDIT
         // returns c.adj list as a vector
         //   Warning: may return an empty vector if adjacency list is empty
         vector<int> getAdj(int c);
