@@ -3,8 +3,10 @@
 #include "cities.h"
 #include "MST_PRIM.h"
 #include "MATCH.h"
+#include "GRAPH_TRAVERSAL.h"
 #include <iostream>
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -113,10 +115,26 @@ int main (int argc, char* argv[])
             cout << adj[j][k] << " ";
         cout << endl;
     }
-    
-
-
+    cout << "END TEST CASE MATCH." << endl << endl;
 //END TEST CASE MATCH
+    
+//TEST CASE GRAPH_TRAVERSAL (uses results of MST_PRIM and MATCH)
+    cout << "STARTING TEST CASE GRAPH_TRAVERSAL: " << endl << endl;
+    int distance;
+    vector<int> ham_circuit;
+    // modifies ham_circuit and distance, given the set of cities and edges in C
+    GRAPH_TRAVERSAL(C, ham_circuit, distance);
+    
+    cout << "Printing the Ham Circuit and its distance..." << endl << endl;
+    cout << "ham_circuit: " << endl;
+    for (int m = 0; m < ham_circuit.size(); m++)
+        cout << ham_circuit[m] << endl;
+    cout << endl << endl;
+    cout << "Total distance travelled: " << distance << endl << endl;
+
+
+//END TEST CASE GRAPH_TRAVERSAL
+    
     
     return 0;
 

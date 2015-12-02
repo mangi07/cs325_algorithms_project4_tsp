@@ -2,7 +2,7 @@
 CXX = g++
 CXXFLAGS = -std=c++0x -g
 #OBJS = 
-HEADERS = MST_PRIM.h MATCH.h cities.h
+HEADERS = MST_PRIM.h MATCH.h GRAPH_TRAVERSAL.h cities.h
 
 default:  main.cpp cities.o ${HEADERS}
 	${CXX} ${CXXFLAGS} main.cpp cities.o ${HEADERS} -o tsp
