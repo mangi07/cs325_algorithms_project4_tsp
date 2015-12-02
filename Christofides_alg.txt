@@ -27,20 +27,23 @@ MST_PRIM(V, r)
         u.key = inf
         u.prev = NIL
     r.key = 0
-    L = V                   // Q implemented as c++ list
+    L = V                   // L implemented as c++ list
     L.sort(COMPARE_KEY)
     while L != empty        // O(V)
         u = L.pop()         // O(1) with list pop()
                             //   On first iteration
+        C.addEdge(u, u.parent)  // needed for future tree traversal
+                                //   this adds an undirected edge
+                            
         for each v in L     // valid since this is a fully-connected graph
                             //   (|L| = number of edges crossing the cut between V - L visited and L unvisited)
                             // sum(of i=1 to |V|)i = O(V^2) iterations of this for
             if v != u and v in L and distance(u, v) < v.key
-                C.addEdge(u, v) // needed for future tree traversal
-                                // this adds an undirected edge
+                v.parent = u
                 v.key = distance(u, v)
-        L.sort(COMPARE_KEY)     // O(V lg V) sort, compare keys of structs: city1.key to city2.key
-                            //   needed because of modifying vertex keys
+
+        L.sort(COMPARE_KEY) // O(V lg V) sort, compare keys of structs: city1.key to city2.key
+                            //   needed to maintain min-queue L
 
                 
 

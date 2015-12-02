@@ -1,6 +1,7 @@
 
 
 #include "cities.h"
+#include "MST_PRIM.h"
 #include <iostream>
 #include <string>
 
@@ -16,7 +17,7 @@ int main (int argc, char* argv[])
     cout << endl;
 
     
-    Cities cities(fileName);
+    //Cities cities(fileName);
 /*
     cout << "Testing cities functions..." << endl;
     cout << "cities.getDistance(0, 0): " << cities.getDistance(0, 0) << endl;
@@ -44,7 +45,7 @@ int main (int argc, char* argv[])
     vector<int> adj2 = cities.getAdj(2);
     cout << "adj2.size(): " << adj2.size() << endl;
     cout << "adj2[0]: " << adj2[0] << endl;
-*/    
+  
     cities.addEdge(2, 3);
     cities.addEdge(3, 2);
     vector<int> c2_edges = cities.getAdj(2);
@@ -63,9 +64,36 @@ int main (int argc, char* argv[])
     cout << "isVisited(2): " << cities.isVisited(2) << endl;
     cities.markUnvisited(2);
     cout << "isVisited(2): " << cities.isVisited(2) << endl;
+*/    
     
     
+    //test MST_PRIM using testMST.txt
+    Cities C(fileName);
+    MST_PRIM(C);
+    vector<int> adj_a = C.getAdj(0);
+    vector<int> adj_b = C.getAdj(1);
+    vector<int> adj_c = C.getAdj(2);
+    vector<int> adj_d = C.getAdj(3);
+    int i = 0;
+    cout << "a.adj: ";
+    for (i = 0; i < adj_a.size(); i++)
+        cout << adj_a[i] << " ";
+    cout << endl;
     
+    cout << "b.adj: ";
+    for (i = 0; i < adj_b.size(); i++)
+        cout << adj_b[i] << " ";
+    cout << endl;
+    
+    cout << "c.adj: ";
+    for (i = 0; i < adj_c.size(); i++)
+        cout << adj_c[i] << " ";
+    cout << endl;
+    
+    cout << "d.adj: ";
+    for (i = 0; i < adj_d.size(); i++)
+        cout << adj_d[i] << " ";
+    cout << endl;
     
     
     

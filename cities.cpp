@@ -21,6 +21,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <vector>
+#include <algorithm>    // used in removeEdge()
 
 #include <math.h>
 
@@ -141,6 +142,9 @@ vector<int> Cities::getAdj(int c)
 // given city u, create undirected directed edge (u, v)
 void Cities::addEdge(int u, int v)
 {
+    if (u == v)
+        return;
+    
     if (u < Cities::citiesData.size() && v < Cities::citiesData.size())
     {
         Cities::citiesData[u].edges.push_back(v);
@@ -163,7 +167,7 @@ void Cities::removeEdge(int u, int v)
         vector<int> * adj_u = &Cities::citiesData[u].edges;
         vector<int> * adj_v = &Cities::citiesData[v].edges;
         
-        //search for edges to remove    
+        //search for edges to remove
         for (int i = 0; i < adj_u->size(); i++)
         {
             if ((*adj_u)[i] == v)
@@ -178,6 +182,8 @@ void Cities::removeEdge(int u, int v)
                 adj_v->erase(adj_v->begin() + j);
             }
         }
+
+        
     }
     else
     {
