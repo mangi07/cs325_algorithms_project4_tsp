@@ -65,7 +65,31 @@ class Cities
         int nearestNeighbor(int u);
         // returns the number of cities represented by the Cities object
         int getSize();
+
         
+// EDIT
+        // returns c.adj list as a vector
+        //   Warning: may return an empty vector if adjacency list is empty
+        vector<int> getAdj(int c);
+        
+        // given city u, create undirected directed edge (u, v)
+        void addEdge(int u, int v);
+        
+        // remove undirected edge
+        //   If the edge does not exist, nothing will be modified.
+        void removeEdge(int u, int v);
+        
+        void markVisited(int c);
+        
+        void markUnvisited(int c);
+        
+        bool isVisited(int c);
+
+
+// END EDIT
+
+
+
     private:            
                     
         // To load city coordinates from input file

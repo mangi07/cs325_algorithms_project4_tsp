@@ -153,14 +153,17 @@ Time Complexity:
     O(V): mark each vertex visited.
     
     O(V): Every time a vertex is marked visited, its edges are pushed onto the stack.
-    Each vertex is marked exactly once.
+    Each vertex is marked exactly once and each edge list searched in linear time for each edge removal.
     There is one more edge than the number of vertices in the graph.
-    Therefore, there are O(2(V+1))=O(V) pushes onto the stack.
+    For each edge traversed, it must be searched for in an edge list in linear time and then be removed in constant time.
+    Therefore, the time complexity of edge traversals is O(V^2).
+    
+    
     
     O(V): Compute the distance of the Hamiltonian cycle.
     
     Everything else takes constant time.
-    Therefore, the time complexity of GRAPH_TRAVERSAL is O(V).
+    Therefore, the time complexity of GRAPH_TRAVERSAL is O(V^2).
 
 *******************************************************************************
 !!!NOT USED (BUT AVAILABLE IF ABOVE TREE_TRAVERSAL IS WORSE
@@ -191,8 +194,6 @@ Time Complexity:
 
 TODO:
 
-After modifying class City according to what is below,
-test City with new modifications,
 play with c++ list, implementing compare function,
 include Cities in MST_PRIM, 
 and then implement MST_PRIM (with c++ list container).
@@ -208,7 +209,6 @@ consider struct initialization:
 
 
 public C.nearestNeighbor(city c) nearest neighbor to city c     // used in MST alg
-public C.getPrev(city c)    // may not be necessary
 public C.getAdj(city c)     // returns c.adj list as a vector
 public C.addEdge(city u index, city v index) // given city u, create undirected directed edge (u, v)
 public C.removeEdge(u, v)   // remove undirected edge

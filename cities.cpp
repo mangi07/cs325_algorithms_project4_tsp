@@ -124,7 +124,89 @@ int Cities::getSize()
     return Cities::matrix.size();
 }
 
+// EDIT
 
+// returns c.adj list as a vector
+//   Warning: may return an empty vector if adjacency list is empty
+vector<int> Cities::getAdj(int c)
+{
+    vector<int> adj;
+    
+    if (c < Cities::citiesData.size())
+        adj = Cities::citiesData[c].edges;
+        
+    return adj;
+}
+
+// given city u, create undirected directed edge (u, v)
+void Cities::addEdge(int u, int v)
+{
+    if (u < Cities::citiesData.size() && v < Cities::citiesData.size())
+    {
+        Cities::citiesData[u].edges.push_back(v);
+        Cities::citiesData[v].edges.push_back(u);
+    }
+    else
+    {
+        cout << "Error in Cities::addEdge: invalid input" << endl;
+    }
+}
+
+// remove undirected edge
+//   If the edge does not exist, nothing will be modified.
+void Cities::removeEdge(int u, int v)
+{
+    if (u < Cities::citiesData.size() && v < Cities::citiesData.size()
+        && u >= 0 && v >= 0)
+    {   
+        // get edge lists
+        vector<int> * adj_u = &Cities::citiesData[u].edges;
+        vector<int> * adj_v = &Cities::citiesData[v].edges;
+        
+        //search for edges to remove    
+        for (int i = 0; i < adj_u->size(); i++)
+        {
+            if ((*adj_u)[i] == v)
+            {
+                adj_u->erase(adj_u->begin() + i);
+            }
+        }
+        for (int j = 0; j < adj_v->size(); j++)
+        {
+            if ((*adj_v)[j] == u)
+            {
+                adj_v->erase(adj_v->begin() + j);
+            }
+        }
+    }
+    else
+    {
+        cout << "Error in Cities::addEdge: invalid input" << endl;
+    }  
+}
+
+void Cities::markVisited(int c)
+{
+    if (c < Cities::citiesData.size() && c >= 0)
+        Cities::citiesData[c].visited = true;
+}
+
+void Cities::markUnvisited(int c)
+{
+    if (c < Cities::citiesData.size() && c >= 0)
+        Cities::citiesData[c].visited = false;
+}
+
+bool Cities::isVisited(int c)
+{
+    if (c < Cities::citiesData.size() && c >= 0)
+        return Cities::citiesData[c].visited;
+    
+    cout << "Error: isVisited received invalid input" << endl;
+    return false;
+}
+
+// END EDIT
 
 
 
