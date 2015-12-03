@@ -209,89 +209,12 @@ Time Complexity:
 
 TODO:
 
-
-
-public C.nearestNeighbor(city c) nearest neighbor to city c     // used in MST alg
-public C.getAdj(city c)     // returns c.adj list as a vector
-public C.addEdge(city u index, city v index) // given city u, create undirected directed edge (u, v)
-public C.removeEdge(u, v)   // remove undirected edge
-public C.markVisited(index of city c)
-public C.markUnvisited(index of city c)
-
-private C.unvisited set of unvisited vertices
-
-
-
-
-
-*****************
-
-
-
-!!!OR BETTER YET, USE deque because we need to iterate over the elements without popping them...
-as an alternative to priority queue.
-
-****
-****
-!!!!!OR EVEN BETTER YET, USE list because you can traverse and sort
-http://www.cplusplus.com/reference/list/list/sort/
-list sort O(N lg N)
-****
-****
-
-implementation of priority queue:
-
-Use std::greater as the comparison function:
-
-std::priority_queue<int, std::vector<int>, std::greater<int> > my_min_heap;
-
-from http://stackoverflow.com/questions/2439283/how-can-i-create-min-stl-priority-queue
-
-*******************************************
-
-Adapt the following example to queue object by writing an operator overloader in the Class,
-http://stackoverflow.com/questions/2439283/how-can-i-create-min-stl-priority-queue:
-
-
-
-
-#include <functional>
-#include <queue>
-#include <vector>
-#include <iostream>
- 
-template<typename T> void print_queue(T& q) {
-    while(!q.empty()) {
-        std::cout << q.top() << " ";
-        q.pop();
-    }
-    std::cout << '\n';
-}
- 
-int main() {
-    std::priority_queue<int> q;
- 
-    for(int n : {1,8,5,6,3,4,0,9,7,2})
-        q.push(n);
- 
-    print_queue(q);
- 
-    std::priority_queue<int, std::vector<int>, std::greater<int> > q2;
- 
-    for(int n : {1,8,5,6,3,4,0,9,7,2})
-        q2.push(n);
- 
-    print_queue(q2);
- 
-    // Using lambda to compare elements.
-    auto cmp = [](int left, int right) { return (left ^ 1) < (right ^ 1);};
-    std::priority_queue<int, std::vector<int>, decltype(cmp)> q3(cmp);
- 
-    for(int n : {1,8,5,6,3,4,0,9,7,2})
-        q3.push(n);
- 
-    print_queue(q3);
- 
-}
-
-******************************************************
+Implement new main file:
+    Correct file io according to assignment specifications.
+Test on server.
+Implement timing (any other specs to follow?).
+Verify solutions with python scripts.
+Use Tim's 2-opt.
+Recalculate results.
+Confer about how to finish the assignment.
+Possibly write README (with compile instructions).

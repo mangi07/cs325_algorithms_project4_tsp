@@ -11,3 +11,7 @@ default:  main.cpp cities.o ${HEADERS}
 	
 cities.o: cities.cpp cities.h
 	g++ -std=c++0x -g cities.cpp cities.h -c
+
+	
+clean:
+	rm -f *.o

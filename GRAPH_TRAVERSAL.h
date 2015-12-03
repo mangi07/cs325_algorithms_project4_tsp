@@ -50,8 +50,8 @@ void GRAPH_TRAVERSAL (Cities& C, vector<int>& H, int& d)
     
     // first vertex visited is special, with no edges to remove
     vector<int> r_adj = C.getAdj(0);
-    for ( int v: r_adj )
-        S.push(v);          // push vertices, adjacent to root 0, onto the stack
+    for ( int v = 0; v < r_adj.size(); v++ )
+        S.push(r_adj[v]);          // push vertices, adjacent to root 0, onto the stack
     int prev = 0;           // 0 becomes the most recently visited vertex
     C.markVisited(0);
     H.push_back(0);
@@ -70,8 +70,8 @@ void GRAPH_TRAVERSAL (Cities& C, vector<int>& H, int& d)
             H.push_back(u);     // record the order of visitation
         
             vector<int> u_adj = C.getAdj(u);
-            for ( int v: u_adj )
-                S.push(v);      // push v onto stack
+            for ( int v = 0; v < u_adj.size(); v++ )
+                S.push(u_adj[v]);      // push v onto stack
         }
         
         prev = u;   // needed for next iteration
